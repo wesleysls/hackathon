@@ -27,7 +27,7 @@ export class SignIn extends Component {
         }
     }
     signupButton(){
-         this.props.navigation.navigate('SignUp');
+         this.props.navigation.navigate('Step1');
 	}
 
 	forgotPassword(){
@@ -51,7 +51,7 @@ export class SignIn extends Component {
 			<View style={styles.container}>
 			    <StatusBar backgroundColor = 'black'/>
 			    <Image style={styles.logo} source={require('../assets/images/carrinho_supermercado.png')}/>
-				<TextInput style={styles.input} keyboardType ='email-address' placeholder={'Digite seu e-mail'} underlineColorAndroid={'transparent'} onChangeText={this.props.changeEmail}/>
+				<TextInput style={styles.input} keyboardType ='email-address' placeholder={'Digite seu e-mail'} onChangeText={this.props.changeEmail}/>
 				<TextInput secureTextEntry = {true} placeholder={'Digite sua senha'} underlineColorAndroid={'transparent'} style={styles.input} onChangeText={this.props.changePassword}/>
 			    <View style={{flexDirection:'row',alignItems:'center'}}>
 			        <TouchableHighlight style={styles.button}  onPress={this.signupButton}>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 		flex:1,
 		justifyContent:'center',
 		alignItems:'center',
-		backgroundColor:'#2a2169'
+		backgroundColor:'#fff'
 	},
 	input:{
 		width:'80%',
@@ -99,16 +99,16 @@ const styles = StyleSheet.create({
 		borderRadius:10
 	},
 	texto:{
-		color:'white',
+		color:'#ccc',
 		fontSize:20,
 	},
 	button:{
-	    margin:10
+		margin:10,
 	},
 	entrar:{
 		width:150,
 		height:40,
-		backgroundColor:'white',
+		backgroundColor:'#ccc',
 		borderRadius:10,
 		flexDirection:'row',
 		alignItems:'center',

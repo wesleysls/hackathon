@@ -9,10 +9,10 @@ import Reducers from './src/Reducers';
 import Inicio from './src/screens/Inicio';
 import Preload from './src/screens/Preload';
 import SignIn from './src/screens/SignIn';
-import SignUp from './src/screens/SignUp';
+import Step1 from './src/screens/Step1';
+import SignUp_Socorrista from './src/screens/SignUp_Socorrista';
+import SignUp_Morador from './src/screens/SignUp_Morador';
 import ForgotPassword from './src/screens/ForgotPassword';
-
-
 
 console.disableYellowBox = true;
 
@@ -26,6 +26,10 @@ const Navegador = StackNavigator({
   SignIn:{
     screen:SignIn
   },
+
+  Step1:{
+    screen:Step1
+  },
   
   Inicio:{
     screen:Inicio,
@@ -34,8 +38,12 @@ const Navegador = StackNavigator({
         }
   },
 
-  SignUp:{
-    screen:SignUp
+  SignUp_Morador:{
+    screen:SignUp_Morador
+  },
+
+  SignUp_Socorrista:{
+    screen:SignUp_Socorrista
   },
 
   ForgotPassword:{

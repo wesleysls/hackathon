@@ -2,7 +2,6 @@ import firebase from '../firebaseConnection';
 
 export const SignOut = (uid) =>{
     firebase.auth().signOut();
-    firebase.database().ref('usuarios').child(uid).child('token').set('off');
     return{
     	type:'changeStatus',
     	payload:{
@@ -51,31 +50,23 @@ export const checkLogin = () => {
 };
 
 
-export const SignUpAction =(name,telefone,estado,cidade,bairro,rua,numero,complemento,email,password,chave)=> {
+export const SignUpAction_user1 =(salvo,tipo,name,email,data_nasc,sexo,criticidade,longitude,latitude,password,token)=> {
     return(dispatch)=>{
     	firebase.auth().createUserWithEmailAndPassword(email,password)
     	.then((user)=>{
              let uid = firebase.auth().currentUser.uid;
              
-             firebase.database().ref('Adms').child(uid).set({
-             	name:name,
-                telefone:telefone,
-                estado:estado,
-                cidade:cidade,
-                bairro:bairro,
-                rua:rua,
-                numero:numero,
-                complemento:complemento,
+             firebase.database().ref('usuario_1').child(uid).set({
+             	salvo:salvo,
+                tipo:tipo,
+                name:name,
                 email:email,
-                chave:chave
-             });
-
-             firebase.database().ref('chats').once('value').then((snapshot)=>{
-                 snapshot.forEach((childItem)=>{
-                    firebase.database().ref('chats').child(childItem.key).child('membros').child(uid).set({
-                        id:uid
-                    });
-                 });
+                data_nasc:data_nasc,
+                sexo:sexo,
+                criticidade:criticidade,
+                longitude:longitude,
+                latitude:latitude,
+                token:token
              });
 
              dispatch({
@@ -102,6 +93,50 @@ export const SignUpAction =(name,telefone,estado,cidade,bairro,rua,numero,comple
     		}
 
     	});
+    }
+};
+
+export const SignUpAction_user2 =(tipo,name,cargo,email,sexo,data_nasc,password,token)=> {
+    alert(tipo)
+    return(dispatch)=>{
+        firebase.auth().createUserWithEmailAndPassword(email,password)
+        .then((user)=>{
+             let uid = firebase.auth().currentUser.uid;
+             
+             firebase.database().ref('usuario_2').child(uid).set({
+                tipo:tipo,
+                name:name,
+                email:email,
+                data_nasc:data_nasc,
+                sexo:sexo,
+                cargo:cargo,
+                token:token
+             });
+
+             dispatch({
+                type:'changeUid',
+                payload:{
+                    uid:uid
+                }
+             });
+        })
+        .catch((error)=>{   
+            switch(error.code){
+                case 'auth/email-already-in-use':
+                    alert("Email já utilizado!");
+                break;
+                case 'auth/invalid-email':
+                    alert("email invalido!");
+                break;
+                case 'auth/operation-not-allowed':
+                    alert("tente novamente mais tarde!");
+                break;
+                case 'auth/weak-password':
+                    alert("Digite uma senha melhor!");
+                break;
+            }
+
+        });
     }
 };
 
@@ -138,46 +173,21 @@ export const  getUser = (uid,callback)=>{
     };
 };
 
-export const  getRestaurante = (chave,callback)=>{
+export const  getConfig = ()=>{
     return(dispatch) => {
-        firebase.database().ref('supermercados').on('value',(snapshot)=>{
-             let restaurante = '';
-             snapshot.forEach((childItem)=>{
-                if(childItem.key == chave){
-                   restaurante = childItem.key;
-                }
-             });
-
-             callback(restaurante);               
+        let config = '';
+        firebase.database().ref('config').child('alerta').on('value',(snapshot)=>{
+            config = snapshot.val();
              dispatch({
-                type:'setRestaurante',
+                type:'setConfig',
                 payload:{
-                    restaurante:restaurante
+                    config
                 }
              });
         });
     };
 };
 
-export const  getChaves = ()=>{
-    return(dispatch) => {
-        firebase.database().ref('supermercados').on('value',(snapshot)=>{
-             let chaves = [];
-             snapshot.forEach((childItem)=>{
-                chaves.push({
-                    chave:childItem.key
-                });
-             });
-           
-             dispatch({
-                type:'setChaves',
-                payload:{
-                    chaves:chaves
-                }
-             });
-        });
-    };
-};
 
 export const SignInAction = (email,password)=>{
 	return(dispatch) =>{
@@ -220,11 +230,11 @@ export const changeEmail = (email) =>{
     };
 };
 
-export const changeChave = (chave) =>{
+export const changeSexo = (sexo) =>{
     return{
-        type:'changeChave',
+        type:'changeSexo',
         payload:{
-            chave:chave
+            sexo:sexo
         }
     };
 };
@@ -255,65 +265,11 @@ export const changeName = (name) =>{
     };	
 };
 
-export const changeTelefone = (telefone) =>{
+export const changeData_nasc = (data_nasc) =>{
     return{
-        type:'changeTelefone',
+        type:'changeData_nasc',
         payload:{
-            telefone:telefone
-        }
-    };  
-};
-
-export const changeEstado = (estado) =>{
-    return{
-        type:'changeEstado',
-        payload:{
-            estado:estado
-        }
-    };  
-};
-
-export const changeCidade = (cidade) =>{
-    return{
-        type:'changeCidade',
-        payload:{
-            cidade:cidade
-        }
-    };  
-};
-
-export const changeBairro = (bairro) =>{
-    return{
-        type:'changeBairro',
-        payload:{
-            bairro:bairro
-        }
-    };  
-};
-
-export const changeRua = (rua) =>{
-    return{
-        type:'changeRua',
-        payload:{
-            rua:rua
-        }
-    };  
-};
-
-export const changeNumero = (numero) =>{
-    return{
-        type:'changeNumero',
-        payload:{
-            numero:numero
-        }
-    };  
-};
-
-export const changeComplemento = (complemento) =>{
-    return{
-        type:'changeComplemento',
-        payload:{
-            complemento:complemento
+            data_nasc:data_nasc
         }
     };  
 };

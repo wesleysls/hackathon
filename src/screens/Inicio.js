@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar,ActivityIndicator} from 'react-native';
+import { View, Text, StyleSheet,StatusBar,ActivityIndicator,TouchableHighlight} from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import {StackActions} from 'react-navigation';
 import { connect } from 'react-redux';
-import { checkLogin} from '../actions/AuthActions';
+import { checkLogin, SignOut} from '../actions/AuthActions';
 
 export class Inicio extends Component {
 
@@ -14,13 +14,23 @@ export class Inicio extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
+		this.posicao = this.posicao.bind(this);
+	}
+
+	posicao(){
+		const { SignOut, navigation, uid } = this.props
+		navigation.navigate('SignIn')
+		SignOut(uid)
 	}
 
 	render() {
 		return (
 			<View style={styles.container}>
 			<StatusBar backgroundColor = 'black'/>
-				 <ActivityIndicator size="large"/>
+			<TouchableHighlight style={{width:50,height:50,backgroundColor:'red'}} onPress={()=> this.posicao()}>
+                 <Text>botao</Text>
+			</TouchableHighlight>
+				
 			</View>
 		);
 	}
@@ -43,7 +53,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const InicioConnect = connect(mapStateToProps, { checkLogin})(Inicio);
+const InicioConnect = connect(mapStateToProps, { checkLogin, SignOut })(Inicio);
 export default InicioConnect;
 
 
