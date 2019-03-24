@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar,ActivityIndicator,TouchableHighlight} from 'react-native';
-import { NavigationActions } from 'react-navigation';
-import {StackActions} from 'react-navigation';
+import { View, Text, StyleSheet, StatusBar, ActivityIndicator, TouchableHighlight } from 'react-native';
+import { Button } from 'native-base'
 import { connect } from 'react-redux';
-import { checkLogin, SignOut} from '../actions/AuthActions';
+import { checkLogin, SignOut } from '../actions/AuthActions';
 
 export class Inicio extends Component {
 
 	static navigationOptions = {
-		
+
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {};
-		this.posicao = this.posicao.bind(this);
 	}
 
-	posicao(){
+	logout() {
 		const { SignOut, navigation, uid } = this.props
 		navigation.navigate('SignIn')
 		SignOut(uid)
@@ -26,11 +24,10 @@ export class Inicio extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-			<StatusBar backgroundColor = 'black'/>
-			<TouchableHighlight style={{width:50,height:50,backgroundColor:'red'}} onPress={()=> this.posicao()}>
-                 <Text>botao</Text>
-			</TouchableHighlight>
-				
+				<StatusBar backgroundColor='white' />
+				<Button style={{ width: 50, height: 50, backgroundColor: 'blue' }} onPress={() => this.logout()}>
+					<Text>Sair</Text>
+				</Button>
 			</View>
 		);
 	}
@@ -38,18 +35,18 @@ export class Inicio extends Component {
 }
 
 const styles = StyleSheet.create({
-	container:{
-		backgroundColor:'#2a2169',
-		flex:1,
-		justifyContent:'center',
-		alignItems:'center'
+	container: {
+		backgroundColor: '#2a2169',
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 
 const mapStateToProps = (state) => {
 	return {
-		status:state.auth.status,
-		uid:state.auth.uid
+		status: state.auth.status,
+		uid: state.auth.uid
 	};
 };
 

@@ -63,10 +63,11 @@ export const SignUpAction_user1 =(salvo,tipo,name,email,data_nasc,sexo,criticida
                 email:email,
                 data_nasc:data_nasc,
                 sexo:sexo,
-                criticidade:criticidade,
-                longitude:longitude,
-                latitude:latitude,
-                token:token
+                criticidade,
+                longitude,
+                latitude,
+                password,
+                token
              });
 
              dispatch({
@@ -93,6 +94,53 @@ export const SignUpAction_user1 =(salvo,tipo,name,email,data_nasc,sexo,criticida
     		}
 
     	});
+    }
+};
+
+export const SignUpAction_user1_min =(name, latitude, longitude)=> {
+    return(dispatch)=>{
+        
+        email = Math.random();
+        senha = Math.random();
+        
+    	firebase.auth().createUserWithEmailAndPassword(email,password)
+    	.then((user)=>{
+             let uid = firebase.auth().currentUser.uid;
+             
+             firebase.database().ref('usuario_1').child(uid).set({
+                name,
+                email,
+                senha,
+                longitude,
+                latitude,
+                token
+             });
+
+             dispatch({
+             	type:'changeUid',
+             	payload:{
+             		uid:uid
+             	}
+             });
+    	})
+    	.catch((error)=>{   
+    		switch(error.code){
+    			case 'auth/email-already-in-use':
+    			    alert("Email já utilizado!");
+    			break;
+    			case 'auth/invalid-email':
+    			    alert("email invalido!");
+    			break;
+    			case 'auth/operation-not-allowed':
+    			    alert("tente novamente mais tarde!");
+    			break;
+    			case 'auth/weak-password':
+    			    alert("Digite uma senha melhor!");
+    			break;
+    		}
+
+    	});
+
     }
 };
 

@@ -11,10 +11,12 @@ export class Step1 extends Component {
 	static navigationOptions = {
 		title: 'Selecione uma opção',
 		headerStyle: {
-			backgroundColor: '#ccc',
+			backgroundColor: '#0072BB',
 			height: 60,
-			color: '#000'
+			color: 'white'
+			
 		},
+		headerTintColor: '#fff',
 	}
 
 	constructor(props) {
@@ -26,26 +28,29 @@ export class Step1 extends Component {
 			],
 			tipo: 0
 		};
-		this.directPages = this.directPages.bind(this);
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		this.props.getConfig()
+	}
+
+	directPages() {
 		const { config } = this.props
-		alert(config);
+
 
 		switch (this.state.tipo) {
 			case 0:
-				this.props.navigation.navigate('SignUp_Morador');
+				this.props.navigation.navigate('SignUp_Morador', { criticidade: true });
 				break;
 			case 1:
-				this.props.navigation.navigate('SignUp_Socorrista');
+				this.props.navigation.navigate('SignUp_Socorrista', { criticidade: true });
 				break;
 		}
+
 	}
 
 	render() {
-
+		const { config } = this.props 
 		let tipoItems = this.state.tipos.map((v, k) => {
 			return <Picker.Item key={k} value={k} label={v.tipo} />
 		});
@@ -54,15 +59,22 @@ export class Step1 extends Component {
 
 
 		return (
-			<View style={styles.container}>
-				<StatusBar backgroundColor='black' />
-				<View style={styles.picker}>
-					<Text style={{ fontSize: 20, color: 'black' }}>Tipo de login:</Text>
-					<Picker selectedValue={this.state.tipo} onValueChange={(itemValue, itemIndex) => this.setState({ tipo: itemValue })} style={{ width: 158 }}>
-						{tipoItems}
-					</Picker>
-					<Button onPress={() => this.directPages()} style={{ width: 200, color: '#fff' }}>
-						<Text>Avançar</Text>
+			<View style={{ display: 'flex', flexDirection: 'column', height: 500 }}>
+
+				<View style={{ display: 'flex', flex: 2, alignItems: 'center' }}>
+					<Text style={{ fontSize: 20, color: 'black', marginTop: 30 }}>Tipo de login:</Text>
+				</View>
+				<View style={{ display: 'flex', flex: 2, alignItems: 'center' }}>
+					<Text style={{ fontSize: 20, color: 'black', marginTop: 30 }}>Status: {config == 'F' ? (<Text style={{color:'green'}}>SEGURO</Text>):(<Text style={{color:'red'}}>NÃO SEGURO</Text>) }</Text>
+				</View>
+				<View style={{ display: 'flex', alignItems: 'center', flex: 2 }}>
+					<View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#ccc', width: 280, alignItems: 'center' }}>
+						<Picker selectedValue={this.state.tipo} onValueChange={(itemValue, itemIndex) => this.setState({ tipo: itemValue })} style={{color:'#000', width:280}} >
+							{tipoItems}
+						</Picker>
+					</View>
+					<Button onPress={() => this.directPages()} style={{ width: 200, color: '#fff', marginTop: 80, alignSelf: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0072BB' }}>
+						<Text style={{ color: 'white' }}>Avançar</Text>
 					</Button>
 				</View>
 			</View>
